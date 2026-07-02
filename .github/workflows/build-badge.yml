@@ -1,0 +1,46 @@
+name: Build badge firmware
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - v*
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build
+        run: pio run -e shipwrecked
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shipwrecked
+          path: .pio/build/shipwrecked/*.uf2
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: .pio/build/shipwrecked/firmware.uf2
+          asset_name: shipwrecked.uf2
+          asset_content_type: application/octet-stream
