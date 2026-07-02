@@ -23,16 +23,23 @@ jobs:
       - name: Build
         run: pio run -e shipwrecked
 
+      - name: Find UF2
+        id: find-uf2
+        run: |
+          FILE=$(find .pio/build/shipwrecked -name "*.uf2" | head -1)
+          echo "path=$FILE" >> $GITHUB_OUTPUT
+          echo "name=$(basename $FILE)" >> $GITHUB_OUTPUT
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: shipwrecked
-          path: .pio/build/shipwrecked/*.uf2
+          path: ${{ steps.find-uf2.outputs.path }}
 
       - name: Create release and upload
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.sha }}
+          tag_name: build-${{ github.sha }}
           name: ${{ github.sha }}
           body: ${{ github.event.head_commit.message }}
-          files: .pio/build/shipwrecked/firmware.uf2
+          files: ${{ steps.find-uf2.outputs.path }}
