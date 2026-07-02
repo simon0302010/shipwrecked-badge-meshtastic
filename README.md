@@ -1,6 +1,6 @@
 # Shipwrecked Badge
 
-![Build](https://github.com/USER/REPO/actions/workflows/build-badge.yml/badge.svg)
+![Build](https://github.com/simon0302010/shipwrecked-badge-meshtastic/actions/workflows/build-badge.yml/badge.svg)
 
 A LoRa chat badge with a 1.54" E-Ink display and phone-style keyboard, powered by a Raspberry Pi Pico and SX1262 radio.
 
