@@ -3,13 +3,14 @@ name: Build badge firmware
 on:
   push:
     branches:
-      - main
       - master
     tags:
       - v*
-  release:
-    types: [published]
   workflow_dispatch:
+
+concurrency:
+  group: badge-release
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -34,13 +35,11 @@ jobs:
           name: shipwrecked
           path: .pio/build/shipwrecked/*.uf2
 
-      - name: Upload to release
-        if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release and upload
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: .pio/build/shipwrecked/firmware.uf2
-          asset_name: shipwrecked.uf2
-          asset_content_type: application/octet-stream
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'continuous' }}
+          body: ${{ startsWith(github.ref, 'refs/tags/') && 'See changelog' || 'Automated build from latest commit.' }}
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          files: .pio/build/shipwrecked/firmware.uf2
