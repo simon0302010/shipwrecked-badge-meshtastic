@@ -86,12 +86,4 @@ These keys work across the entire UI:
 | SW12 | Move left |
 | SW3  | Move up |
 
-## Usage
 
-- **T9 text entry** — tap a key repeatedly to cycle through letters (multi-tap), pause 1.5s to commit
-- **SFT** — shift next letter to uppercase
-- **SPC** — insert space
-- **BSP** — backspace
-- **DEL** — clear the entire compose buffer
-- **SND** — send the composed message over LoRa
-- **DEL + SFT (3s)** — enter USB bootloader
