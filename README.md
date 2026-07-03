@@ -84,3 +84,7 @@ These keys work across the entire UI:
 | SW5  | Move down |
 | SW12 | Move left |
 | SW3  | Move up |
+
+## AI Usage
+
+This is purely made on vibes
