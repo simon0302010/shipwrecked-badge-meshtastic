@@ -12,6 +12,10 @@ A port of the meshtastic firmware to the shipwrecked badge.
 - Low power consumption
 - Much more
 
+## Demo
+
+https://github.com/user-attachments/assets/fb910827-d302-4bf8-a076-c1b966bb3300
+
 ## Installing
 
 ### Option 1: Download a release build
