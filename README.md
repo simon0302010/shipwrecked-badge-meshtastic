@@ -1,25 +1,25 @@
-# Shipwrecked Badge
+# Shipwrecked Badge Meshtastic Firmware
 
 ![Build](https://github.com/simon0302010/shipwrecked-badge-meshtastic/actions/workflows/build-badge.yml/badge.svg)
 
-A LoRa chat badge with a 1.54" E-Ink display and phone-style keyboard, powered by a Raspberry Pi Pico and SX1262 radio.
+A port of the meshtastic firmware to the shipwrecked badge.
 
-## Firmware
+## Features
 
-| Path | Description |
-|------|-------------|
-| `variants/rp2040/shipwrecked/` | Shipwrecked variant config (pinout, display, radio) |
-| `src/` | Meshtastic firmware source |
-| `shipwrecked-pcb/` | KiCad PCB design, web flasher, and tools |
+- Sending and receiving message via LoRa
+- Snappy navigation using the lower button row
+- Partial refresh support (for the eInk display)
+- Low power consumption
+- Much more
 
 ## Installing
 
 ### Option 1: Download a release build
 
-Every push to `main`/`master` and every new tag triggers an automatic build via GitHub Actions. The resulting `.uf2` is attached to releases.
+Every push and every new tag triggers an automatic build via GitHub Actions. The resulting `.uf2` is attached to releases.
 
 1. Head to the **Releases** section of this repository
-2. Download the latest `shipwrecked.uf2` file
+2. Download the latest firmware file
 3. Continue to [Entering boot mode](#entering-boot-mode)
 
 ### Option 2: Build from source
@@ -36,30 +36,25 @@ pip install platformio
 pio run -e shipwrecked
 ```
 
-The output file is `.pio/build/shipwrecked/firmware.uf2`.
+The output file is `.pio/build/shipwrecked/firmware-shipwrecked-x.x.xx.xxxxxxx.uf2`.
 
 ### Entering boot mode
 
-The badge enters USB mass-storage boot mode (RPI-RP2 drive) in two ways:
+Follow the instructions to enter USB mass-storage boot mode:
 
-- **Hold the BOOTSEL button on the back** of the Pico while connecting USB — or press and hold it, then tap RESET
-- **Software bootloader** — hold **DEL** + **SFT** (bottom row buttons) for 3 seconds. The screen will freeze and the badge re-enumerates as RPI-RP2
+- Unplug and power off the badge
+- Hold **SW1** on the back of the pcb while plugging in the cable
+- Keep holding the button until a drive labeled `RPI-RP2` shows up on your computer
 
 ### Flashing
 
 Once the badge appears as an `RPI-RP2` drive on your computer, copy the `.uf2` file to it:
 
 ```bash
-cp .pio/build/shipwrecked/firmware.uf2 /path/to/RPI-RP2/
+cp .pio/build/shipwrecked/firmware-shipwrecked-*.uf2 /path/to/RPI-RP2/
 ```
 
 The badge automatically reboots when the copy finishes.
-
-Alternatively, with `picotool` installed:
-
-```bash
-picotool load .pio/build/shipwrecked/firmware.uf2 -f
-```
 
 ## Radio configuration
 
@@ -85,5 +80,3 @@ These keys work across the entire UI:
 | SW5  | Move down |
 | SW12 | Move left |
 | SW3  | Move up |
-
-
